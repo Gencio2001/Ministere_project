@@ -1,0 +1,532 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<main class="main">
+  <p class="breadcrumb">
+    Accueil / Recommandations / <span>Ajouter une recommandation</span>
+  </p>
+  <h1 class="page-title">Ajouter une recommandation</h1>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <form method="POST" id="recommandationForm">
+        {% csrf_token %}
+
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-icon">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                width="22"
+              >
+                <path d="M12 2L3 7v9c0 5 9 6 9 6s9-1 9-6V7l-9-5z" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <circle cx="12" cy="16" r=".5" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="d-flex flex-column justify-content-center mb-0">
+              <p class="section-title">Niveau de priorité</p>
+              <p class="section-subtitle">
+                Évaluer l'urgence de mise en œuvre de cette recommandation
+              </p>
+            </div>
+          </div>
+          <hr />
+          <div class="priority-grid">
+            <label class="priority-card critique">
+              <input type="radio" name="priorite" value="critique" checked />
+              <div class="dot"></div>
+              <strong>Critique</strong>
+              <span>Action immédiate</span>
+            </label>
+            <label class="priority-card moyenne">
+              <input type="radio" name="priorite" value="moyenne" />
+              <div class="dot"></div>
+              <strong>Moyenne</strong>
+              <span>Dans les 90 jours</span>
+            </label>
+            <label class="priority-card haute">
+              <input type="radio" name="priorite" value="haute" />
+              <div class="dot"></div>
+              <strong>Haute</strong>
+              <span>Dans les 30 jours</span>
+            </label>
+            <label class="priority-card faible">
+              <input type="radio" name="priorite" value="faible" />
+              <div class="dot"></div>
+              <strong>Faible</strong>
+              <span>Amélioration continue</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="
+                background: rgba(2, 119, 151, 0.1);
+                color: var(--primary-color);
+              "
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                width="22"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <circle cx="12" cy="16" r=".5" fill="currentColor"></circle>
+              </svg>
+            </div>
+            <div class="d-flex flex-column justify-content-center mb-0">
+              <p class="section-title">Informations générales</p>
+              <p class="section-subtitle">
+                Découvrez le problème identifié et la recommandation
+              </p>
+            </div>
+          </div>
+          <hr />
+          <div class="section-body">
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label"
+                  >RAPPORT LIÉ <span class="text-danger">*</span></label
+                >
+                <select
+                  class="form-select select2-single"
+                  name="rapport_lie"
+                  required
+                >
+                  <option value="">Sélectionner le rapport concerné</option>
+                  {% for rapport in rapports %}
+                  <option value="{{ rapport.id }}">
+                    {{ rapport.reference }} - {{ rapport.type_inspection }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label"
+                  >TITRE DE LA RECOMMANDATION
+                  <span class="text-danger">*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  name="titre"
+                  placeholder="Ex : Mise en conformité..."
+                />
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px">
+              <label class="form-label"
+                >CONSTAT/PROBLÈME OBSERVÉ
+                <span class="text-danger">*</span></label
+              >
+              <textarea id="editorConstat" name="constat" required></textarea>
+            </div>
+
+            <div class="form-group" style="margin-top: 20px">
+              <label class="form-label"
+                >RECOMMANDATION DÉTAILLÉE
+                <span class="text-danger">*</span></label
+              >
+              <textarea
+                id="editorDetails"
+                name="recommandation_detaillee"
+                required
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-header">
+            <div
+              class="section-icon"
+              style="
+                background: rgba(2, 119, 151, 0.1);
+                color: var(--primary-color);
+              "
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                width="22"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <circle cx="12" cy="16" r=".5" fill="currentColor"></circle>
+              </svg>
+            </div>
+            <div class="d-flex flex-column justify-content-center mb-0">
+              <p class="section-title">Responsabilité et échéances</p>
+              <p class="section-subtitle">
+                Définissez qui doit agir et dans quel délai
+              </p>
+            </div>
+          </div>
+          <hr />
+          <div class="section-body">
+            <div class="form-group">
+              <label class="form-label"
+                >STRUCTURE RESPONSABLE <span class="text-danger">*</span></label
+              >
+              <select
+                class="form-select select2-single"
+                name="structure_responsable"
+                id="select_structures"
+                required
+              >
+                <option value="" selected disabled>
+                  Choisir la structure...
+                </option>
+                {% for str in structures %}
+                <option
+                  value="{{ str.id }}"
+                  data-responsable="{{ str.responsable_nom }}"
+                >
+                  {{ str.nom }}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label text-muted"
+                  >RESPONSABLE PRINCIPAL</label
+                >
+                <input
+                  type="text"
+                  id="nom_responsable_display"
+                  class="form-control"
+                  readonly
+                  placeholder="Responsable automatique..."
+                />
+                <input
+                  type="hidden"
+                  name="responsable_principal"
+                  id="hidden_responsable_nom"
+                />
+                <small class="text-muted" style="font-size: 0.75rem">
+                  Responsable de la structure sélectionnée.
+                </small>
+              </div>
+              <div class="form-group">
+                <label class="form-label"
+                  >RESPONSABLES ASSOCIÉS (SECONDAIRES)</label
+                >
+                <select
+                  class="form-control select2-secondaires"
+                  name="secondaires[]"
+                  multiple="multiple"
+                  style="width: 100%"
+                >
+                  {% for str in structures %}
+                  <option value="{{ str.responsable_nom }}">
+                    {{ str.nom }} — ({{ str.responsable_nom|default:"Responsable
+                    non défini" }})
+                  </option>
+                  {% endfor %}
+                </select>
+                <small class="text-muted" style="font-size: 0.75rem">
+                  * Sélectionnez les responsables des autres départements
+                  impliqués.
+                </small>
+              </div>
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label"
+                  >DATE D'ÉCHÉANCE <span class="text-danger">*</span></label
+                >
+                <input
+                  type="date"
+                  class="form-control"
+                  name="date_echeance"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-footer-actions">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            onclick="window.history.back()"
+          >
+            Annuler
+          </button>
+          <button type="submit" name="save_add" class="btn btn-outline-primary">
+            Enregistrer et ajouter
+          </button>
+          <button type="submit" name="save" class="btn btn-primary">
+            Enregistrer
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="sticky-sidebar">
+        <div class="sidebar-card mb-4">
+          <p class="side-card-title">Récapitulatif</p>
+          <div class="recap-item">
+            <span>Référence</span>
+            <strong class="text-primary">{{ prochaine_ref }}</strong>
+          </div>
+
+          <div class="recap-item">
+            <span>Priorité</span>
+            <strong id="recap_priorite">Critique</strong>
+          </div>
+
+          <div class="recap-item">
+            <span>Titre</span>
+            <strong
+              id="recap_titre"
+              class="text-muted text-truncate"
+              style="max-width: 150px"
+              >Non défini</strong
+            >
+          </div>
+
+          <div class="recap-item">
+            <span>Rapport lié</span>
+            <strong id="recap_rapport" class="text-primary">Non défini</strong>
+          </div>
+
+          <div class="recap-item">
+            <span>Structure</span>
+            <strong id="recap_structure" class="text-primary"
+              >Non défini</strong
+            >
+          </div>
+
+          <div class="recap-item">
+            <span>Responsable</span>
+            <strong id="recap_responsable" class="text-primary"
+              >Non défini</strong
+            >
+          </div>
+
+          <div class="recap-item">
+            <span>Échéance</span>
+            <strong id="recap_echeance">Non définie</strong>
+          </div>
+
+          <div class="recap-item">
+            <span>Statut</span>
+            <span class="badge bg-light text-dark">Brouillon</span>
+          </div>
+        </div>
+        <br />
+        <div class="sticky-sidebar">
+          <div class="sidebar-card">
+            <p class="side-card-title">Guide de rédaction</p>
+            <ul class="guide-list">
+              <li>
+                Le constat doit être factuel, basé sur des observations
+                vérifiables.
+              </li>
+              <li>
+                Chaque action corrective doit être spécifique et mesurable.
+              </li>
+              <li>Fixez une échéance réaliste selon le niveau de priorité.</li>
+              <li>
+                Associez toujours un responsable identifiable à chaque
+                recommandation.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script
+  src="https://cdn.tiny.cloud/1/46l3djw5i4fqikacshmsa3fd22cvk5eytj1erp00h23c4quj/tinymce/6/tinymce.min.js"
+  referrerpolicy="origin"
+></script>
+<script>
+  // 1. Initialisation de TinyMCE
+  tinymce.init({
+    selector: "#editorConstat, #editorDetails",
+    height: 250,
+    menubar: false,
+    plugins: ["advlist", "autolink", "lists", "link", "image", "code"],
+    toolbar:
+      "undo redo | bold italic | alignleft aligncenter alignright | bullist numlist",
+    content_style:
+      'body { font-family: "Montserrat", sans-serif; font-size: 14px }',
+    setup: function (editor) {
+      editor.on("change keyup", function () {
+        editor.save();
+      });
+    },
+  });
+
+  $(document).ready(function () {
+    // ==========================================
+    // FONCTIONS UTILITAIRES (AJOUTÉES ICI)
+    // ==========================================
+    function ajouterJours(date, jours) {
+      const res = new Date(date);
+      res.setDate(res.getDate() + parseInt(jours));
+      return res;
+    }
+
+    function formaterDateISO(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    // ==========================================
+    // 1. INITIALISATION SELECT2
+    // ==========================================
+    $('select[name="rapport_lie"]').select2({
+      placeholder: "Sélectionner le rapport",
+      allowClear: true,
+      width: "100%",
+    });
+    $('select[name="structure_responsable"]').select2({
+      placeholder: "Sélectionner",
+      allowClear: true,
+      width: "100%",
+    });
+    $(".select2-secondaires").select2({
+      placeholder: "Sélectionner des responsables",
+      allowClear: true,
+      width: "100%",
+    });
+
+    // ==========================================
+    // 2. MISE À JOUR DYNAMIQUE
+    // ==========================================
+
+    // TITRE
+    $('input[name="titre"]').on("input", function () {
+      $("#recap_titre").text($(this).val() || "Non défini");
+    });
+
+    // STRUCTURE & RESPONSABLE
+    $('select[name="structure_responsable"]').on("change", function () {
+      const selectedOption = $(this).find(":selected");
+      const nomResponsable = selectedOption.data("responsable");
+      const nomStructure = selectedOption.text().trim();
+
+      if ($(this).val()) {
+        $("#nom_responsable_display").val(nomResponsable);
+        $("#hidden_responsable_nom").val(nomResponsable);
+        $("#recap_structure").text(nomStructure);
+        $("#recap_responsable").text(nomResponsable || "Non défini");
+      } else {
+        $("#nom_responsable_display").val("En attente...");
+        $("#recap_structure").text("Non définie");
+        $("#recap_responsable").text("Non défini");
+      }
+    });
+
+    // PRIORITÉ ET CALCUL DE DATE (FUSIONNÉS)
+    $('input[name="priorite"]').on("change", function () {
+      const val = $(this).val();
+      const label = $(this).closest(".priority-card").find("strong").text();
+      const target = $("#recap_priorite");
+      const today = new Date();
+      let dateCalculer = null;
+
+      // Mise à jour visuelle du récap
+      target
+        .text(label)
+        .removeClass(
+          "text-danger text-warning text-success text-orange text-primary",
+        );
+
+      if (val === "critique") target.addClass("text-danger");
+      else if (val === "haute") target.addClass("text-orange");
+      else if (val === "moyenne") target.addClass("text-warning");
+      else if (val === "faible") target.addClass("text-success");
+
+      // Calcul auto
+      if (val === "critique") dateCalculer = today;
+      else if (val === "haute") dateCalculer = ajouterJours(today, 30);
+      else if (val === "moyenne") dateCalculer = ajouterJours(today, 90);
+
+      const inputDate = $('input[name="date_echeance"]');
+      inputDate.val(dateCalculer ? formaterDateISO(dateCalculer) : "");
+      inputDate.trigger("change");
+    });
+
+    // RAPPORT LIÉ
+    $('select[name="rapport_lie"]').on("change", function () {
+      const selectedText = $(this).find(":selected").text();
+      if ($(this).val()) {
+        // On récupère tout ce qui est avant le dernier tiret qui sépare le type
+        // Ou plus simple : on prend tout le texte si tu veux la référence complète
+        const ref = selectedText.trim();
+        $("#recap_rapport").text(ref);
+      } else {
+        $("#recap_rapport").text("Non défini");
+      }
+    });
+
+    // ÉCHÉANCE (Texte du récap)
+    $('input[name="date_echeance"]').on("change", function () {
+      const val = $(this).val();
+      if (val) {
+        const parts = val.split("-");
+        $("#recap_echeance").text(`${parts[2]}/${parts[1]}/${parts[0]}`);
+      } else {
+        $("#recap_echeance").text("Non définie");
+      }
+    });
+
+    // ==========================================
+    // 3. VALIDATION & SÉCURITÉ
+    // ==========================================
+    $("#recommandationForm").on("submit", function (e) {
+      tinymce.triggerSave();
+      const constat = $("#editorConstat").val() || "";
+      const details = $("#editorDetails").val() || "";
+      const structure = $('select[name="structure_responsable"]').val();
+
+      const cleanConstat = constat
+        .replace(/<[^>]*>?/gm, "")
+        .replace(/&nbsp;/g, "")
+        .trim();
+      const cleanDetails = details
+        .replace(/<[^>]*>?/gm, "")
+        .replace(/&nbsp;/g, "")
+        .trim();
+
+      if (!structure) {
+        e.preventDefault();
+        alert("Erreur : Sélectionnez une structure responsable.");
+        return false;
+      }
+      if (cleanConstat === "" || cleanDetails === "") {
+        e.preventDefault();
+        alert("Erreur : Le Constat et la Recommandation sont obligatoires.");
+        return false;
+      }
+    });
+
+    // Initialisation au chargement
+    $('input[name="priorite"]:checked').trigger("change");
+    const dtToday = new Date().toISOString().split("T")[0];
+    $('input[name="date_echeance"]').attr("min", dtToday);
+  });
+</script>
+{% endblock %}

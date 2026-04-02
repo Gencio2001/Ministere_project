@@ -1,0 +1,920 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --primary: #027797;
+  --primary-color: #027797;
+  --bg: #f0f4f6;
+  --white: #ffffff;
+  --text: #1e1e1e;
+  --muted: #7d8790;
+  --label: #bcbaba;
+  --border: #d9d9d9;
+  --accent-blue: #d1e9f0;
+  --badge-draft: #e9ecef;
+  --badge-sent: #d4ecdb;
+  --sidebar-w: 265px;
+  --active-bg: rgba(2, 119, 151, 0.1);
+}
+
+body {
+  font-family: "Montserrat", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+}
+/* --- SUPPRESSION DES SOULIGNEMENTS --- */
+a,
+a:hover,
+a:focus {
+  text-decoration: none !important;
+  color: inherit;
+  outline: none;
+}
+
+/* ── SIDEBAR ─────────────────────────────────────── */
+.sidebar {
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  height: 100vh;
+  overflow-y: auto; /* Permet de défiler DANS la sidebar si le menu est trop long */
+}
+
+.sidebar-search {
+  margin: 16px 16px 8px;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+.sidebar-search svg {
+  width: 16px; /* Icône plus petite */
+  height: 16px;
+}
+
+.nav-section {
+  padding: 0 16px;
+  margin-top: 16px;
+}
+.nav-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--label);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+  padding-left: 8px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0.625rem 0.9375rem;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s;
+  margin-bottom: 4px;
+}
+.nav-item:hover {
+  background: var(--bg);
+}
+.nav-item .active {
+  background: var(--active-bg);
+  font-weight: 600;
+}
+.nav-item svg {
+  flex-shrink: 0;
+  width: 1.125rem;
+  margin-right: 0.625rem;
+}
+
+.nav-children {
+  padding-left: 1px;
+  border-left: 2px solid var(--border);
+  margin-left: 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.nav-child {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+  padding: 0.533rem 0.9375rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.nav-child:hover {
+  background: var(--bg);
+}
+.nav-child.active {
+  background: var(--active-bg);
+}
+
+.sidebar-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 14px 16px;
+}
+
+.sidebar-profile {
+  margin: auto 10px 16px;
+  background: var(--bg);
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.profile-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: var(--accent-blue);
+  flex-shrink: 0;
+}
+.profile-info {
+  flex: 1;
+}
+.profile-name {
+  font-size: 12px;
+  font-weight: 600;
+}
+.profile-role {
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.profile-arrow {
+  color: var(--muted);
+}
+
+/* ── MAIN ────────────────────────────────────────── */
+.main {
+  padding: 36px 28px 40px;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.page-title {
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--text);
+}
+.breadcrumb {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  margin-top: 6px;
+}
+.breadcrumb span {
+  color: var(--primary);
+}
+
+/* ── TABLE SECTION ───────────────────────────────── */
+.table-section {
+  background: var(--white);
+  border-radius: 8px;
+  margin-top: 0px;
+  overflow: hidden;
+}
+
+.table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.table-title {
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  background: var(--bg);
+  border: none;
+  border-radius: 8px;
+  padding: 9px 14px 9px 40px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  width: 220px;
+  outline: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7' stroke='%237d8790' stroke-width='2'/%3E%3Cpath d='M20 20l-3-3' stroke='%237d8790' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 12px center;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: opacity 0.15s;
+}
+.btn:hover {
+  opacity: 0.85;
+}
+.btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.btn-export {
+  background: var(--bg);
+  color: var(--text);
+}
+.btn-filter {
+  background: var(--white);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.btn-primary {
+  background: var(--primary);
+  color: var(--white);
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+thead tr {
+  background: var(--white);
+  border-top: 1px solid var(--bg);
+}
+th {
+  padding: 12px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+}
+th .sort-icon {
+  display: inline-block;
+  margin-left: 4px;
+  vertical-align: middle;
+  opacity: 0.6;
+}
+
+tbody tr {
+  border-left: 3px solid transparent;
+  transition: background 0.12s;
+}
+tbody tr:hover {
+  background: #f7fafb;
+}
+tbody tr.status-draft {
+  border-left-color: #6c757d;
+}
+tbody tr.status-transmis {
+  border-left-color: #198754;
+}
+
+td {
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  border-top: 1px solid var(--bg);
+  white-space: nowrap;
+}
+td.ref {
+  font-weight: 700;
+}
+td.structure {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge {
+  display: inline-block;
+  padding: 5px 14px;
+  border-radius: 28px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.badge.brouillon {
+  background: var(--badge-draft);
+  color: var(--text);
+}
+.badge.transmis {
+  background: var(--badge-sent);
+  color: #155724;
+}
+
+.action-btn {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  background: none;
+  border: none;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* ── PAGINATION ──────────────────────────────────── */
+.table-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 24px;
+  background: var(--white);
+}
+.pagination-info {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.page-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.page-btn.active {
+  background: var(--primary);
+  color: var(--white);
+  border-color: var(--primary);
+}
+.page-btn:hover:not(.active) {
+  background: var(--bg);
+}
+.page-btn.arrow {
+  font-size: 16px;
+  color: var(--text);
+}
+
+/* ── RESPONSIVE hint ─────────────────────────────── */
+@media (max-width: 900px) {
+  .sidebar {
+    display: none;
+  }
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Grilles du formulaire */
+.card-body {
+  padding: 24px;
+}
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group.form-label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #444;
+}
+.required {
+  color: #e63946;
+}
+
+/* Styles des Inputs */
+.input-field {
+  height: 45px;
+  padding: 0 15px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  outline: none;
+  background: var(--white);
+}
+.input-field:focus {
+  border-color: var(--primary);
+}
+.input-field.disabled {
+  background: var(--bg);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+/* Radio group style */
+.radio-group {
+  display: flex;
+  gap: 15px;
+}
+.radio-item {
+  padding: 10px 20px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.radio-item.active {
+  background: var(--accent-blue);
+  border-color: var(--primary);
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+.search-btn-square {
+  width: 45px;
+  height: 45px;
+  justify-content: center;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+/* Select2 Customization */
+.select2-container--default .select2-selection--multiple {
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  min-height: 45px !important;
+}
+.select2-container--default .select2-selection--choice {
+  background-color: var(--accent-blue) !important;
+  border: 1px solid var(--primary) !important;
+  color: var(--primary) !important;
+}
+
+/* les icônes des sections et boutons ajouter rapport */
+.section-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+.btn svg {
+  width: 16px !important;
+  height: 16px !important;
+}
+/* Style pour l'éditeur de motif */
+.editor-toolbar button {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+}
+.editor-toolbar button:hover {
+  background: var(--bg);
+}
+
+/* --- Formulaires et Mise en page --- */
+
+.breadcrumb {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.breadcrumb span {
+  color: var(--primary);
+  font-weight: 600;
+}
+.page-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 30px;
+}
+
+/* Cartes de section */
+.section-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 24px;
+  margin-top: 20px;
+  border-bottom: 3px solid var(--primary-color);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  align-items: center;
+}
+.section-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(2, 119, 151, 0.1);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+/* Grilles de formulaire */
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+.form-group label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #444;
+}
+.required {
+  color: #e74c3c;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+.input-field:focus {
+  border-color: var(--primary-color);
+  outline: none;
+}
+.input-field.disabled {
+  background: #f5f5f5;
+  cursor: not-allowed;
+}
+
+/* Radio et Editeur */
+.radio-group {
+  display: flex;
+  gap: 20px;
+  margin-top: 10px;
+}
+.radio-item {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+.radio-item.active {
+  background: rgba(2, 119, 151, 0.1);
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.editor-wrap {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  overflow: hidden;
+  background: white;
+}
+.editor-toolbar {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  gap: 5px;
+  background: #f9f9f9;
+}
+.editor-toolbar button {
+  border: 1px solid #ccc;
+  background: white;
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+/* Actions */
+.form-actions {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+.btn-export {
+  background: #eee;
+  color: #555;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+}
+
+.title-text {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0px;
+}
+.subtitle-text {
+  font-size: 0.8125rem;
+  margin-top: 0.0625rem;
+  margin-bottom: 0rem;
+  color: var(--muted);
+}
+
+/* Grille des priorités */
+.priority-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-top: 10px;
+}
+
+/* 1. Masquer le bouton radio standard */
+.priority-card input[type="radio"] {
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none;
+}
+
+/* 2. Styles de base de la carte */
+.priority-card {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 18px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  min-height: 110px;
+  position: relative;
+}
+
+/* 3. Le point de couleur (.dot) avec son fond doux (halo) */
+.priority-card .dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Le fond doux (Halo) */
+.priority-card .dot::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border-radius: 50%;
+  background-color: currentColor !important; /* Force la couleur de la catégorie */
+  opacity: 0.2; /* Ajuste l'opacité pour le côté pastel */
+  z-index: -1;
+}
+
+/* 4. Effet quand coché (Cercle de sélection) */
+.priority-card input:checked + .dot {
+  box-shadow:
+    0 0 0 3px #fff,
+    0 0 0 5px currentColor;
+}
+
+/* 5. Typographie */
+.priority-card strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.priority-card span {
+  font-size: 11px;
+  color: #7d8790;
+  line-height: 1.2;
+  display: block;
+}
+
+/* 6. Couleurs spécifiques (On définit la couleur une fois pour tout le bloc) */
+.priority-card.critique {
+  color: #e74c3c !important; /* Le halo et le point utiliseront ce rouge */
+  border-color: #f1948a !important;
+}
+.priority-card.critique .dot {
+  background-color: #e74c3c !important;
+}
+
+.priority-card.haute {
+  color: #e67e22 !important; /* Le halo et le point utiliseront cet orange */
+  border-color: #f5b041 !important;
+}
+.priority-card.haute .dot {
+  background-color: #e67e22 !important;
+}
+
+.priority-card.moyenne {
+  color: #f1c40f !important; /* Le halo et le point utiliseront ce jaune */
+  border-color: #f7dc6f !important;
+}
+.priority-card.moyenne .dot {
+  background-color: #f1c40f !important;
+}
+
+.priority-card.faible {
+  color: #2ecc71 !important; /* Le halo et le point utiliseront ce vert */
+  border-color: #a9dfbf !important;
+}
+.priority-card.faible .dot {
+  background-color: #2ecc71 !important;
+}
+
+/* 7. État sélectionné (Le fond du cadre s'adapte à la couleur du texte) */
+.priority-card:has(input:checked) {
+  /* On utilise currentColor pour que le fond devienne rouge/orange/vert pâle */
+  background-color: currentColor !important;
+
+  /* On ajoute un filtre pour que ce soit très clair (effet pastel) */
+  /* Alternative : utiliser une variable si currentColor est trop sombre */
+  background-image: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.92),
+    rgba(255, 255, 255, 0.92)
+  ) !important;
+
+  border-width: 2px !important;
+  border-color: currentColor !important;
+}
+/* Footer fixe */
+.form-footer-actions {
+  position: fixed;
+  bottom: 0;
+  left: 260px; /* Aligné avec ta sidebar */
+  right: 0;
+  background: #fff;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  border-top: 1px solid #eee;
+  z-index: 1000;
+}
+/* Rend la sidebar collante au scroll */
+.sticky-sidebar {
+  position: -webkit-sticky; /* Pour Safari */
+  position: sticky;
+  top: 20px; /* Distance par rapport au haut de l'écran lors du scroll */
+}
+
+/* Harmonisation visuelle des cartes de la sidebar */
+.sidebar-card {
+  background: #fff;
+  border: 1px solid #edf2f7; /* Gris très léger pour correspondre aux section-cards */
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02); /* Légère ombre comme sur ton design */
+}
+
+.side-card-title {
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #f8f9fa;
+  padding-bottom: 10px;
+}
+
+/* 1. On force le conteneur à être un Flexbox large */
+.sidebar-card .recap-item {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important; /* L'espace se met au milieu */
+  align-items: center !important;
+  width: 100% !important;
+  padding: 10px 0 !important;
+  border-bottom: 1px solid #f0f2f5 !important;
+}
+
+/* 2. On neutralise le titre (à gauche) */
+.sidebar-card .recap-item span {
+  display: inline-block !important;
+  flex-shrink: 0 !important; /* Empêche le mot "Structure" de s'écraser */
+  margin-bottom: 0 !important;
+  width: auto !important;
+  min-width: 80px !important;
+}
+
+/* 3. On force la valeur (à droite) */
+.sidebar-card .recap-item strong {
+  display: inline-block !important;
+  text-align: right !important;
+  flex-grow: 1 !important; /* Prend tout l'espace vide pour pousser à droite */
+  margin-left: 10px !important;
+  word-break: break-word !important; /* Pour que "Direction des..." puisse aller à la ligne si besoin */
+  font-size: 13px !important;
+}
+.guide-list {
+  padding-left: 15px;
+  margin: 0;
+}
+
+.guide-list li {
+  font-size: 13px;
+  color: #4a5568;
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+/* --- FORÇAGE DES COULEURS DU RÉCAPITULATIF --- */
+.text-orange {
+  color: #ff7700 !important; /* On utilise le même orange que ton .dot .haute */
+}
+
+.text-danger {
+  color: #ff1900 !important; /* Rouge critique */
+}
+
+.text-warning {
+  color: #ffcc00 !important; /* Jaune moyenne */
+}
+
+.text-success {
+  color: #00ff6a !important; /* Vert faible */
+}

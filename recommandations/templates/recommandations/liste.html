@@ -1,0 +1,433 @@
+{% extends 'base.html' %} {% block content %}
+<div
+  style="
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  "
+>
+  <div>
+    <h1
+      style="
+        font-size: 28px;
+        font-weight: 800;
+        color: #1e1e1e;
+        margin: 0;
+        font-family: &quot;Montserrat&quot;, sans-serif;
+      "
+    >
+      Recommandations
+    </h1>
+    <p style="font-size: 13px; color: #7d8790; margin-top: 5px">
+      Accueil /
+      <span style="color: #027797; font-weight: 600"
+        >Liste des recommandations</span
+      >
+    </p>
+  </div>
+
+  <a
+    href="{% url 'recommandations:ajouter' %}"
+    style="
+      background: #027797;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: white;
+      transition: 0.2s;
+    "
+  >
+    <svg
+      width="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="white"
+      stroke-width="2.5"
+    >
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+    Ajouter une recommandation
+  </a>
+</div>
+
+<div
+  class="table-section"
+  style="
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    overflow: hidden;
+    font-family: &quot;Montserrat&quot;, sans-serif;
+  "
+>
+  <div
+    style="
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 25px;
+      border-bottom: 1px solid #f0f0f0;
+    "
+  >
+    <p style="font-weight: 700; font-size: 18px; margin: 0; color: #1e1e1e">
+      Rapports d'inspections
+    </p>
+
+    <div style="display: flex; gap: 10px; align-items: center">
+      <div style="position: relative">
+        <input
+          type="text"
+          placeholder="Rechercher..."
+          name="q"
+          value="{{ request.GET.q }}"
+          style="
+            padding: 8px 15px 8px 35px;
+            background: #f4f7f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 13px;
+            width: 220px;
+            outline: none;
+          "
+        />
+        <svg
+          style="
+            position: absolute;
+            left: 12px;
+            top: 10px;
+            width: 14px;
+            color: #7d8790;
+          "
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="m21 21-4.3-4.3" />
+        </svg>
+      </div>
+
+      <button
+        class="btn"
+        style="
+          background: white;
+          border: 1px solid #e0e0e0;
+          height: 38px;
+          padding: 0 15px;
+          border-radius: 6px;
+          font-weight: 600;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: #1e1e1e;
+        "
+      >
+        <svg
+          width="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        Exporter
+      </button>
+
+      <button
+        style="
+          background: white;
+          border: 1px solid #e0e0e0;
+          padding: 8px 15px;
+          border-radius: 8px;
+          font-size: 13px;
+          font-weight: 600;
+          color: #1e1e1e;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          cursor: pointer;
+        "
+      >
+        <svg
+          width="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+        </svg>
+        Filtrer
+      </button>
+    </div>
+  </div>
+
+  <div style="overflow-x: auto">
+    <table style="width: 100%; border-collapse: collapse; min-width: 850px">
+      <thead style="background: #f8f9fa">
+        <tr>
+          <th
+            style="
+              padding: 15px 25px;
+              text-align: left;
+              font-size: 11px;
+              color: #8898aa;
+              text-transform: uppercase;
+            "
+          >
+            ID Reco.
+          </th>
+          <th
+            style="
+              padding: 15px 25px;
+              text-align: left;
+              font-size: 11px;
+              color: #8898aa;
+              text-transform: uppercase;
+            "
+          >
+            Réf. Rapports
+          </th>
+          <th
+            style="
+              padding: 15px 25px;
+              text-align: left;
+              font-size: 11px;
+              color: #8898aa;
+              text-transform: uppercase;
+            "
+          >
+            Écart constaté
+          </th>
+          <th
+            style="
+              padding: 15px 25px;
+              text-align: left;
+              font-size: 11px;
+              color: #8898aa;
+              text-transform: uppercase;
+            "
+          >
+            Niveau
+          </th>
+          <th
+            style="
+              padding: 15px 25px;
+              text-align: left;
+              font-size: 11px;
+              color: #8898aa;
+              text-transform: uppercase;
+            "
+          >
+            Statut
+          </th>
+          <th
+            style="
+              padding: 15px 25px;
+              text-align: right;
+              font-size: 11px;
+              color: #8898aa;
+              text-transform: uppercase;
+            "
+          >
+            Action
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for reco in recommandations %}
+        <tr
+          style="border-bottom: 1px solid #f1f4f8; transition: 0.2s"
+          onmouseover="this.style.background = '#fcfdfe'"
+          onmouseout="this.style.background = 'transparent'"
+        >
+          <td
+            style="
+              padding: 16px 25px;
+              color: #027797;
+              font-weight: 700;
+              font-size: 14px;
+            "
+          >
+            {{ reco.reference }}
+          </td>
+          <td style="padding: 16px 25px">
+            {% for rapp in reco.rapports_lies.all %}
+            <span
+              style="
+                background: #eef2f4;
+                color: #027797;
+                padding: 3px 8px;
+                border-radius: 4px;
+                font-size: 11px;
+                font-weight: 700;
+                margin-right: 4px;
+              "
+              >{{ rapp.reference }}</span
+            >
+            {% empty %}
+            <span style="color: #cbd5e0; font-size: 12px">-</span>
+            {% endfor %}
+          </td>
+          <td
+            style="
+              padding: 16px 25px;
+              font-size: 13px;
+              font-weight: 600;
+              color: #1a202c;
+              max-width: 300px;
+            "
+          >
+            {{ reco.titre|truncatechars:60 }}
+          </td>
+          <td style="padding: 16px 25px">
+            <span
+              style="font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px;
+              {% if reco.priorite == 'critique' %} color: #dc3545;
+              {% elif reco.priorite == 'haute' %} color: #fd7e14;
+              {% elif reco.priorite == 'moyenne' %} color: #ffc107;
+              {% else %} color: #28a745; {% endif %}"
+            >
+              ● {{ reco.get_priorite_display }}
+            </span>
+          </td>
+          <td style="padding: 16px 25px">
+            <span
+              style="padding: 5px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; 
+              {% if reco.statut == 'soldee' %} background: #d4f3e7; color: #1a7f57;
+              {% elif reco.statut == 'en_cours' %} background: #e0f2ff; color: #0070c9;
+              {% else %} background: #f1f3f5; color: #6c757d; {% endif %}"
+            >
+              {{ reco.get_statut_display }}
+            </span>
+          </td>
+          <td style="padding: 16px 20px; text-align: right">
+            <div style="display: inline-flex; gap: 5px">
+              <a href="#" class="action-btn btn-view" title="Voir">
+                <svg
+                  width="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </a>
+
+              <a href="#" class="action-btn btn-archive" title="Archiver">
+                <svg
+                  width="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="21 8 21 21 3 21 3 8"></polyline>
+                  <rect x="1" y="3" width="22" height="5"></rect>
+                  <line x1="10" y1="12" x2="14" y2="12"></line>
+                </svg>
+              </a>
+
+              <a href="#" class="action-btn btn-edit" title="Modifier">
+                <svg
+                  width="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+                  />
+                  <path
+                    d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td
+            colspan="6"
+            style="
+              text-align: center;
+              padding: 60px;
+              color: #a0aec0;
+              font-weight: 600;
+            "
+          >
+            Aucune recommandation trouvée.
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <div
+    style="
+      padding: 15px 25px;
+      border-top: 1px solid #f0f2f5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: white;
+    "
+  >
+    <p style="font-size: 13px; color: #7d8790; margin: 0">
+      Total : <strong>{{ recommandations|length }}</strong> recommandations
+    </p>
+    <div style="display: flex; gap: 5px">
+      <button
+        style="
+          padding: 6px 12px;
+          border: 1px solid #e0e6ed;
+          background: white;
+          border-radius: 6px;
+          cursor: pointer;
+        "
+      >
+        &#8249;
+      </button>
+      <button
+        style="
+          padding: 6px 12px;
+          background: #027797;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          font-weight: 600;
+        "
+      >
+        1
+      </button>
+      <button
+        style="
+          padding: 6px 12px;
+          border: 1px solid #e0e6ed;
+          background: white;
+          border-radius: 6px;
+          cursor: pointer;
+        "
+      >
+        &#8250;
+      </button>
+    </div>
+  </div>
+</div>
+{% endblock %}
