@@ -1,0 +1,144 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Système d'Inspection</title>
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> 
+</head>
+<body>
+<div  class="container-fluid">
+  <div class="row">
+      <aside class="sidebar col-md-2 col-lg-3">
+        <div class="sidebar-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3-3"/></svg>
+          Rechercher
+        </div>
+
+        <p class="nav-label">Menu Principal</p>
+          
+          <a class="nav-item {% if request.path == '/' %}active{% endif %}" href="{% url 'home' %}">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.4 12C2.4 6.69749 6.6975 2.39999 12 2.39999C17.3025 2.39999 21.6 6.69749 21.6 12C21.6 17.3025 17.3025 21.6 12 21.6C6.6975 21.6 2.4 17.3025 2.4 12ZM14.4 15.6C14.4 14.5912 13.7812 13.7287 12.9 13.3762V6.89999C12.9 6.40124 12.4987 5.99999 12 5.99999C11.5013 5.99999 11.1 6.40124 11.1 6.89999V13.3762C10.2188 13.7325 9.6 14.595 9.6 15.6C9.6 16.9237 10.6762 18 12 18C13.3238 18 14.4 16.9237 14.4 15.6ZM7.8 8.99999C8.46375 8.99999 9 8.46374 9 7.79999C9 7.13624 8.46375 6.59999 7.8 6.59999C7.13625 6.59999 6.6 7.13624 6.6 7.79999C6.6 8.46374 7.13625 8.99999 7.8 8.99999ZM7.2 12C7.2 11.3362 6.66375 10.8 6 10.8C5.33625 10.8 4.8 11.3362 4.8 12C4.8 12.6637 5.33625 13.2 6 13.2C6.66375 13.2 7.2 12.6637 7.2 12ZM18 13.2C18.6637 13.2 19.2 12.6637 19.2 12C19.2 11.3362 18.6637 10.8 18 10.8C17.3363 10.8 16.8 11.3362 16.8 12C16.8 12.6637 17.3363 13.2 18 13.2ZM17.4 7.79999C17.4 7.13624 16.8638 6.59999 16.2 6.59999C15.5363 6.59999 15 7.13624 15 7.79999C15 8.46374 15.5363 8.99999 16.2 8.99999C16.8638 8.99999 17.4 8.46374 17.4 7.79999Z" fill="black"/>
+          </svg>
+              Tableau de bord
+          </a>
+
+          <a class="nav-item {% if 'rapports' in request.path %}active{% endif %}" href="{% url 'rapports:liste' %}">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16.8 3.59999H16.4775C16.065 2.88374 15.2887 2.39999 14.4 2.39999H9.6C8.71125 2.39999 7.935 2.88374 7.5225 3.59999H7.2C5.87625 3.59999 4.8 4.67624 4.8 5.99999V19.2C4.8 20.5237 5.87625 21.6 7.2 21.6H16.8C18.1237 21.6 19.2 20.5237 19.2 19.2V5.99999C19.2 4.67624 18.1237 3.59999 16.8 3.59999ZM9.9 6.59999C9.40125 6.59999 9 6.19874 9 5.69999C9 5.20124 9.40125 4.79999 9.9 4.79999H14.1C14.5987 4.79999 15 5.20124 15 5.69999C15 6.19874 14.5987 6.59999 14.1 6.59999H9.9Z" fill="#7D8790"/>
+          </svg>
+              Rapport d'inspection
+          </a>
+          <div class="nav-children">
+            <a href="{% url 'rapports:ajouter' %}" class="nav-child {% if 'ajouter' in request.path and 'rapports' in request.path %}active{% endif %}">Ajouter un rapport</a>
+            <a href="{% url 'rapports:liste' %}" class="nav-child {% if 'rapports' in request.path and 'ajouter' not in request.path %}active{% endif %}">Liste des rapports</a>
+          </div>
+
+          <a class="nav-item {% if 'recommandations' in request.path %}active{% endif %}" href="{% url 'recommandations:liste' %}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3.67126L4.815 8.99251L10.7437 13.3875C10.9425 13.5338 11.1637 13.6463 11.4 13.7138V19.8C11.4 20.0063 11.4187 20.205 11.4487 20.4H4.8C3.47625 20.4 2.4 19.3238 2.4 18V9.00376C2.4 8.24251 2.76 7.52626 3.37125 7.07626L10.7437 1.61251C11.1075 1.34251 11.5462 1.20001 12 1.20001C12.4537 1.20001 12.8925 1.34626 13.2562 1.61251L20.6287 7.07626C20.8987 7.27501 21.12 7.52626 21.2812 7.81126C21.1875 7.80376 21.0937 7.80001 21 7.80001H17.5725L12 3.67126ZM13.2 11.4C13.2 10.4063 14.0062 9.60001 15 9.60001H21C21.9937 9.60001 22.8 10.4063 22.8 11.4V19.8C22.8 20.7938 21.9937 21.6 21 21.6H15C14.0062 21.6 13.2 20.7938 13.2 19.8V11.4ZM16.2 12C15.7012 12 15.3 12.4013 15.3 12.9C15.3 13.3988 15.7012 13.8 16.2 13.8H19.8C20.2987 13.8 20.7 13.3988 20.7 12.9C20.7 12.4013 20.2987 12 19.8 12H16.2ZM16.2 15.6C15.7012 15.6 15.3 16.0013 15.3 16.5C15.3 16.9988 15.7012 17.4 16.2 17.4H18.3C18.7987 17.4 19.2 16.9988 19.2 16.5C19.2 16.0013 18.7987 15.6 18.3 15.6H16.2Z" fill="#7D8790"/>
+            </svg>
+
+                Recommandations
+          </a>
+          <div class="nav-children">
+            <a href="{% url 'recommandations:ajouter' %}" class="nav-child {% if 'ajouter' in request.path and 'recommandations' in request.path %}active{% endif %}">Ajouter une recommandation</a>
+            <a href="{% url 'recommandations:liste' %}" class="nav-child {% if 'recommandations' in request.path and 'ajouter' not in request.path %}active{% endif %}">Liste des recommandations</a>
+          </div>
+
+          <a class="nav-item {% if 'affectations' in request.path %}active{% endif %}" href="{% url 'affectations:liste' %}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 4.79999C5.33625 4.79999 4.8 4.26374 4.8 3.59999C4.8 2.93624 5.33625 2.39999 6 2.39999H9.6C11.5875 2.39999 13.2 4.01249 13.2 5.99999V17.5012L15.9525 14.7487C16.4212 14.28 17.1825 14.28 17.6512 14.7487C18.12 15.2175 18.12 15.9787 17.6512 16.4475L12.8512 21.2475C12.3825 21.7162 11.6212 21.7162 11.1525 21.2475L6.3525 16.4475C5.88375 15.9787 5.88375 15.2175 6.3525 14.7487C6.82125 14.28 7.5825 14.28 8.05125 14.7487L10.8 17.5012V5.99999C10.8 5.33624 10.2637 4.79999 9.6 4.79999H6Z" fill="#7D8790"/>
+            </svg>
+                  Affectations
+          </a>
+          <div class="nav-children">
+            <a href="{% url 'affectations:ajouter' %}" class="nav-child {% if 'ajouter' in request.path and 'affectations' in request.path %}active{% endif %}">Ajouter une affectation</a>
+            <a href="{% url 'affectations:liste' %}" class="nav-child {% if 'affectations' in request.path and 'ajouter' not in request.path %}active{% endif %}">Liste des affectations</a>
+          </div>
+
+          <div style="margin: 20px 0; border-top: 1px solid rgba(255,255,255,0.1);"></div>
+          <p class="nav-label">Paramètres</p>
+          
+          <a class="nav-item {% if 'structures' in request.path %}active{% endif %}" href="{% url 'structures:liste' %}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.4 3.59998C4.40625 3.59998 3.6 4.40623 3.6 5.39998C3.6 6.39373 4.40625 7.19998 5.4 7.19998H11.1V8.69998L9.3 10.5H6.6C5.1075 10.5 3.9 11.7075 3.9 13.2V15.6H3.6C2.93625 15.6 2.4 16.1362 2.4 16.8V19.2C2.4 19.8637 2.93625 20.4 3.6 20.4H6C6.66375 20.4 7.2 19.8637 7.2 19.2V16.8C7.2 16.1362 6.66375 15.6 6 15.6H5.7V13.2C5.7 12.7012 6.10125 12.3 6.6 12.3H9.3L11.1 14.1V15.6H10.8C10.1363 15.6 9.6 16.1362 9.6 16.8V19.2C9.6 19.8637 10.1363 20.4 10.8 20.4H13.2C13.8638 20.4 14.4 19.8637 14.4 19.2V16.8C14.4 16.1362 13.8638 15.6 13.2 15.6H12.9V14.1L14.7 12.3H17.4C17.8988 12.3 18.3 12.7012 18.3 13.2V15.6H18C17.3363 15.6 16.8 16.1362 16.8 16.8V19.2C16.8 19.8637 17.3363 20.4 18 20.4H20.4C21.0638 20.4 21.6 19.8637 21.6 19.2V16.8C21.6 16.1362 21.0638 15.6 20.4 15.6H20.1V13.2C20.1 11.7075 18.8925 10.5 17.4 10.5H14.7L12.9 8.69998V7.19998H18.6C19.5938 7.19998 20.4 6.39373 20.4 5.39998C20.4 4.40623 19.5938 3.59998 18.6 3.59998H5.4Z" fill="#7D8790"/>
+            </svg>
+                  Gestion des structures
+          </a>
+          <div class="nav-children">
+            <a href="#" class="nav-child {% if 'ajouter' in request.path and 'structures' in request.path %}active{% endif %}">Ajouter une structure</a>
+            <a href="{% url 'structures:liste' %}" class="nav-child {% if 'structures' in request.path and 'ajouter' not in request.path %}active{% endif %}">Liste des structures</a>
+          </div>
+
+          <a class="nav-item {% if 'utilisateurs' in request.path %}active{% endif %}" href="{% url 'users:liste' %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" style="margin-right:10px"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                  Gestion des utilisateurs
+          </a>
+          <div class="nav-children">
+            <a href="{% url 'users:login' %}" class="nav-child {% if 'connexion' in request.path %}active{% endif %}">Nouveau compte</a>
+            <a href="{% url 'users:liste' %}" class="nav-child {% if 'utilisateurs' in request.path and 'connexion' not in request.path %}active{% endif %}">Liste des utilisateurs</a>
+          </div>
+          
+          <a class="nav-item {% if 'journaux' in request.path %}active{% endif %}" href="{% url 'journaux:liste' %}">
+            <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.4 15.6H16.8C18.1238 15.6 19.2 14.5238 19.2 13.2V4.2C19.2 2.87625 18.1238 1.8 16.8 1.8H11.2013C10.9425 1.8 10.6875 1.7175 10.4813 1.56L9.04125 0.48C8.625 0.16875 8.11875 0 7.60125 0H2.4C1.07625 0 0 1.07625 0 2.4V13.2C0 14.5238 1.07625 15.6 2.4 15.6Z" fill="#7D8790"/>
+            </svg>
+                    Journaux 
+          </a>
+        </nav>
+
+        <div class="sidebar-profile">
+          <div class="profile-info">
+            <p class="profile-name">Jean DOVONON</p>
+            <p class="profile-role">RÔLE SYSTÈME</p>
+          </div>
+        </div>
+      </aside>
+    <main class="main col-md-10 col-lg-9 ms-sm-auto">
+      {% if messages %}
+        <div class="container-fluid mt-3">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm" role="alert" style="border-radius: 8px;">
+                    {% if message.tags == 'success' %}
+                        <i class="fas fa-check-circle me-2"></i>
+                    {% elif message.tags == 'error' %}
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                    {% endif %}
+                    
+                    {{ message }}
+                    
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+      
+      {% block content %}       
+      {% endblock %}
+    
+    </main>
+</div>
+</div>
+
+</main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
+</body>
+</html>

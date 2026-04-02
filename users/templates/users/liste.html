@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <div>
+        <h1 style="font-size: 24px; font-weight: 700; margin: 0;">Gestion des Utilisateurs</h1>
+        <p style="color: #9e9e9e; font-size: 14px; margin-top: 5px;">Administration / <span style="color: #4a5568;">Comptes et Accès</span></p>
+    </div>
+    
+    <div style="display: flex; gap: 10px; align-items: center;">
+      <div style="position: relative; display: flex; align-items: center;">
+        <svg style="position: absolute; left: 12px; width: 18px; color: #9e9e9e;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" placeholder="Rechercher un utilisateur..." style="padding: 10px 15px 10px 40px; border-radius: 8px; border: 1px solid #e0e0e0; background: #f5f7f9; width: 250px;">
+      </div>
+      
+      <button style="background: #f5f7f9; border: 1px solid #e0e0e0; padding: 10px 15px; border-radius: 8px; display: flex; align-items: center; gap: 8px; cursor: pointer; color: #4a5568; font-weight: 500;">
+        <svg width="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Exporter
+      </button>
+
+      <a href="#" style="background: #007b92; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; display: flex; align-items: center; gap: 8px; font-weight: 600;">
+        <span style="font-size: 20px;">+</span> Créer un compte
+      </a>
+    </div>
+  </div>
+
+  <div class="table-section" style="background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+    <table style="width: 100%; border-collapse: collapse;">
+      <thead>
+        <tr style="text-align: left; color: #9e9e9e; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; border-bottom: 1px solid #edf2f7;">
+          <th style="padding: 15px;"><div style="display: flex; align-items: center; gap: 8px;">UTILISATEUR <svg width="10" viewBox="0 0 24 24" fill="none" stroke="#cbd5e0" stroke-width="3"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg></div></th>
+          <th style="padding: 15px;"><div style="display: flex; align-items: center; gap: 8px;">RÔLE / FONCTION <svg width="10" viewBox="0 0 24 24" fill="none" stroke="#cbd5e0" stroke-width="3"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg></div></th>
+          <th style="padding: 15px;"><div style="display: flex; align-items: center; gap: 8px;">STRUCTURE <svg width="10" viewBox="0 0 24 24" fill="none" stroke="#cbd5e0" stroke-width="3"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg></div></th>
+          <th style="padding: 15px;"><div style="display: flex; align-items: center; gap: 8px;">DERNIÈRE CONNEXION <svg width="10" viewBox="0 0 24 24" fill="none" stroke="#cbd5e0" stroke-width="3"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg></div></th>
+          <th style="padding: 15px;"><div style="display: flex; align-items: center; gap: 8px;">STATUT <svg width="10" viewBox="0 0 24 24" fill="none" stroke="#cbd5e0" stroke-width="3"><path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/></svg></div></th>
+          <th style="padding: 15px; text-align: right;">ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in utilisateurs %}
+          <tr style="border-bottom: 1px solid #f5f7f9;">
+            <td style="padding: 15px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="width: 35px; height: 35px; background: #e0f2f1; color: #007b92; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px;">
+                        {{ u.nom_complet|slice:":1"|upper }}
+                    </div>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-weight: 600; color: #2d3748;">{{ u.nom_complet }}</span>
+                        <span style="font-size: 12px; color: #a0aec0;">@{{ u.username }}</span>
+                    </div>
+                </div>
+            </td>
+            <td style="padding: 15px;">
+                <span style="background: #f0f4f8; color: #334e68; border: 1px solid #d9e2ec; font-size: 11px; padding: 4px 8px; border-radius: 4px; font-weight: 600;">
+                    {{ u.role }}
+                </span>
+            </td>
+            <td style="padding: 15px; color: #4a5568; font-size: 13px;">{{ u.structure|default:"MINISTERE (CENTRAL)" }}</td>
+            <td style="padding: 15px; color: #718096; font-size: 13px;">{{ u.last_login|date:"d/m/Y H:i"|default:"Jamais connecté" }}</td>
+            <td style="padding: 15px;">
+                {% if u.is_active %}
+                <span style="display: inline-flex; align-items: center; gap: 5px; background: #e6f4ea; color: #1e7e34; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;">
+                    <span style="width: 6px; height: 6px; background: #28a745; border-radius: 50%;"></span> ACTIF
+                </span>
+                {% else %}
+                <span style="display: inline-flex; align-items: center; gap: 5px; background: #fff5f5; color: #c53030; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 700;">
+                    <span style="width: 6px; height: 6px; background: #e53e3e; border-radius: 50%;"></span> BLOQUÉ
+                </span>
+                {% endif %}
+            </td>
+            <td style="padding: 15px; text-align: right;">
+                <button style="background: white; border: 1px solid #e2e8f0; padding: 6px 12px; border-radius: 6px; color: #4a5568; font-size: 13px; cursor: pointer;">Modifier</button>
+            </td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 100px 0;">
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+                    <div style="background: #f5f7f9; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="#9e9e9e" stroke-width="1.8" style="width: 30px;">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <p style="font-weight: 600; color: #9e9e9e; font-size: 16px;">Aucun utilisateur trouvé.</p>
+                </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 25px; padding-top: 15px; border-top: 1px solid #f5f7f9;">
+        <p style="color: #9e9e9e; font-size: 13px;">{{ utilisateurs|length }} utilisateur(s) au total</p>
+        <div style="display: flex; gap: 5px; align-items: center;">
+            <button style="border: none; background: none; color: #9e9e9e; cursor: pointer;">&lt;</button>
+            <button style="width: 32px; height: 32px; border-radius: 6px; border: none; background: #007b92; color: white; font-weight: 600; cursor: pointer;">1</button>
+            <button style="border: none; background: none; color: #9e9e9e; cursor: pointer;">&gt;</button>
+        </div>
+    </div>
+  </div>
+{% endblock %}
