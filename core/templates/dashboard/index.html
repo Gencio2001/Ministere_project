@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1 style="font-size: 28px; font-weight: 800; margin-bottom: 5px;">Tableau de bord</h1>
+<p style="color: #7d8790; margin-bottom: 25px;">Accueil/ <span style="color: #027797; font-weight: 600;">Tableau de bord</span></p>
+
+<div class="dashboard-kpi-grid">
+    <div class="kpi-card">
+        <div class="kpi-icon-wrap">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="40" height="40" rx="8" fill="#D1E8F0"/>
+<path d="M25.3334 10.6667H24.975C24.5167 9.87083 23.6542 9.33333 22.6667 9.33333H17.3334C16.3459 9.33333 15.4834 9.87083 15.025 10.6667H14.6667C13.1959 10.6667 12 11.8625 12 13.3333V28C12 29.4708 13.1959 30.6667 14.6667 30.6667H25.3334C26.8042 30.6667 28 29.4708 28 28V13.3333C28 11.8625 26.8042 10.6667 25.3334 10.6667ZM17.6667 14C17.1125 14 16.6667 13.5542 16.6667 13C16.6667 12.4458 17.1125 12 17.6667 12H22.3334C22.8875 12 23.3334 12.4458 23.3334 13C23.3334 13.5542 22.8875 14 22.3334 14H17.6667Z" fill="#027797"/>
+</svg>
+ </div>
+        <p class="kpi-value">{{ total_rapports|default:"248" }}</p>
+        <p class="kpi-label">Total des rapports</p>
+    </div>
+
+    <div class="kpi-card green">
+        <div class="kpi-icon-wrap">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="40" height="40" rx="8" fill="#D4ECDB"/>
+<path d="M22.4125 12.1167C22.8458 11.5208 22.7125 10.6875 22.1167 10.2542C21.5208 9.82083 20.6875 9.95416 20.2542 10.55L15.8375 16.6208L14.275 15.0583C13.7542 14.5375 12.9083 14.5375 12.3875 15.0583C11.8667 15.5792 11.8667 16.425 12.3875 16.9458L15.0542 19.6125C15.3292 19.8875 15.7125 20.0292 16.1 20C16.4875 19.9708 16.8458 19.7708 17.075 19.4542L22.4083 12.1208L22.4125 12.1167ZM27.7458 17.7833C28.1792 17.1875 28.0458 16.3542 27.45 15.9208C26.8542 15.4875 26.0208 15.6208 25.5875 16.2167L18.5042 25.9542L15.6083 23.0583C15.0875 22.5375 14.2417 22.5375 13.7208 23.0583C13.2 23.5792 13.2 24.425 13.7208 24.9458L17.7208 28.9458C17.9958 29.2208 18.3792 29.3625 18.7667 29.3333C19.1542 29.3042 19.5125 29.1042 19.7417 28.7875L27.7417 17.7875L27.7458 17.7833Z" fill="#198755"/>
+</svg>
+</div>
+        <p class="kpi-value">{{ total_transmis|default:"143" }}</p>
+        <p class="kpi-label">Rapport transmis</p>
+    </div>
+
+    <div class="kpi-card orange">
+        <div class="kpi-icon-wrap">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="40" height="40" rx="8" fill="#FDE8D0"/>
+<path d="M20 9.33333C25.8917 9.33333 30.6667 14.1083 30.6667 20C30.6667 25.8917 25.8917 30.6667 20 30.6667C14.1084 30.6667 9.33337 25.8917 9.33337 20C9.33337 14.1083 14.1084 9.33333 20 9.33333ZM19 14.3333V20C19 20.3333 19.1667 20.6458 19.4459 20.8333L23.4459 23.5C23.9042 23.8083 24.525 23.6833 24.8334 23.2208C25.1417 22.7583 25.0167 22.1417 24.5542 21.8333L21 19.4667V14.3333C21 13.7792 20.5542 13.3333 20 13.3333C19.4459 13.3333 19 13.7792 19 14.3333Z" fill="#E67D23"/>
+</svg>
+</div>
+        <p class="kpi-value">{{ total_en_attente|default:"34" }}</p>
+        <p class="kpi-label">En attente de validation</p>
+    </div>
+
+    <div class="kpi-card gray">
+        <div class="kpi-icon-wrap">
+           <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="40" height="40" rx="8" fill="#D0D3D5"/>
+<path d="M28.9833 10.2375C28.0708 9.32499 26.5958 9.32499 25.6833 10.2375L24.6666 11.2542L28.7458 15.3333L29.7624 14.3167C30.6749 13.4042 30.6749 11.9292 29.7624 11.0167L28.9833 10.2375ZM16.5166 19.4042C16.2624 19.6583 16.0666 19.9708 15.9541 20.3167L14.7208 24.0167C14.5999 24.375 14.6958 24.7708 14.9624 25.0417C15.2291 25.3125 15.6249 25.4042 15.9874 25.2833L19.6874 24.05C20.0291 23.9375 20.3416 23.7417 20.5999 23.4875L27.3333 16.7458L23.2541 12.6667L16.5166 19.4042ZM13.3333 12C11.1249 12 9.33325 13.7917 9.33325 16V26.6667C9.33325 28.875 11.1249 30.6667 13.3333 30.6667H23.9999C26.2083 30.6667 27.9999 28.875 27.9999 26.6667V22.6667C27.9999 21.9292 27.4041 21.3333 26.6666 21.3333C25.9291 21.3333 25.3333 21.9292 25.3333 22.6667V26.6667C25.3333 27.4042 24.7374 28 23.9999 28H13.3333C12.5958 28 11.9999 27.4042 11.9999 26.6667V16C11.9999 15.2625 12.5958 14.6667 13.3333 14.6667H17.3333C18.0708 14.6667 18.6666 14.0708 18.6666 13.3333C18.6666 12.5958 18.0708 12 17.3333 12H13.3333Z" fill="#6C757D"/>
+</svg>
+</div>
+        <p class="kpi-value">{{ total_brouillons|default:"27" }}</p>
+        <p class="kpi-label">Brouillons</p>
+    </div>
+</div>
+
+<div class="table-section">
+    <div class="table-header">
+        <p class="table-title">Rapports d'inspections récents</p>
+        <div class="table-actions">
+            <form method="GET" action="">
+                <input class="search-box" type="text" placeholder="Rechercher" name="q" value="{{ request.GET.q }}">
+            </form>
+            <button class="btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Exporter
+            </button>
+            <button class="btn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                Filtrer
+            </button>
+            <a href="{% url 'rapports:ajouter' %}" class="btn btn-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Ajouter un rapport
+            </a>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Référence <span class="sort-icon">⇅</span></th>
+                <th>Date <span class="sort-icon">⇅</span></th>
+                <th>Structure <span class="sort-icon">⇅</span></th>
+                <th>Type <span class="sort-icon">⇅</span></th>
+                <th>Département <span class="sort-icon">⇅</span></th>
+                <th>Statut <span class="sort-icon">⇅</span></th>
+                <th style="text-align: right;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in rapports_recents %}
+            <tr class="{% if r.statut == 'BROUILLON' %}status-draft{% else %}status-transmis{% endif %}">
+                <td class="ref">{{ r.reference }}</td>
+                <td>{{ r.date_creation|date:"d/m/Y" }}</td>
+                <td class="structure">{{ r.structure_inspectee.nom|truncatechars:25 }}</td>
+                <td>{{ r.type_rapport|default:"Routine" }}</td>
+                <td>{{ r.departement }}</td>
+                <td>
+                    <span class="badge {% if r.statut == 'BROUILLON' %}brouillon{% else %}transmis{% endif %}">
+                        {{ r.statut|title }}
+                    </span>
+                </td>
+                <td style="text-align: right;">
+                     <div style="display: inline-flex; gap: 5px;">
+                        
+                        <a href="#" class="action-btn btn-view" title="Voir">
+                            <svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        </a>
+
+                        <a href="#" class="action-btn btn-archive" title="Archiver">
+                            <svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+                        </a>
+
+                        <a href="#" class="action-btn btn-edit" title="Modifier">
+                            <svg width="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </a>
+
+                    </div>
+                </td>
+            
+            </tr>
+            {% empty %}
+            <tr><td colspan="7" style="text-align: center; padding: 40px; color: #718096;">Aucun rapport trouvé.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="table-footer">
+        <p class="pagination-info">Affichage de 1-{{ rapports_recents.count }} sur {{ total_rapports }} rapports</p>
+        <div class="pagination">
+            <button class="page-btn arrow">&#8249;</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn arrow">&#8250;</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

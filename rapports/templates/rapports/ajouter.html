@@ -1,0 +1,587 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+<style>
+  /* CSS pour uniformiser Select2 Simple et Multiple */
+  .select2-container--default .select2-selection--single,
+  .select2-container--default .select2-selection--multiple {
+    border: 1px solid #ced4da !important;
+    border-radius: 8px !important; /* Arrondi comme tes inputs */
+    min-height: 46px !important;
+    font-family: "Montserrat", sans-serif !important;
+    background-color: #fff !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__rendered {
+    line-height: 46px !important;
+    padding-left: 12px !important;
+    color: #444 !important;
+  }
+
+  .select2-container--default
+    .select2-selection--single
+    .select2-selection__arrow {
+    height: 44px !important;
+    right: 10px !important;
+  }
+
+  /* Style spécifique pour les tags du champ multiple */
+  .select2-container--default
+    .select2-selection--multiple
+    .select2-selection__choice {
+    background-color: #e1f5fa !important;
+    border: 1px solid #027797 !important;
+    color: #027797 !important;
+    border-radius: 4px !important;
+    padding: 2px 8px !important;
+    margin-top: 7px !important;
+  }
+</style>
+
+<main class="main" style="padding: 0">
+  <p class="breadcrumb">
+    Accueil / Rapport d'inspection / <span>Ajouter un rapport</span>
+  </p>
+  <h1 class="page-title">Ajouter un rapport</h1>
+
+  <form method="POST" id="rapportForm">
+    {% csrf_token %}
+
+    <div class="section-card">
+      <div class="section-header">
+        <div class="section-icon">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <circle cx="12" cy="16" r=".5" fill="currentColor" />
+          </svg>
+        </div>
+        <div class="d-flex flex-column justify-content-center mb-0">
+          <p class="title-text">Information générale</p>
+          <p class="subtitle-text">
+            Renseignez les informations de base du rapport
+          </p>
+        </div>
+      </div>
+      <hr />
+
+      <div class="section-body">
+        <div class="form-grid-3">
+          <div class="form-group" style="margin-bottom: 15px">
+            <label
+              style="
+                font-weight: 700;
+                color: #1e1e1e;
+                margin-bottom: 5px;
+                display: block;
+              "
+              >Référence <span style="color: red">*</span></label
+            >
+            <input
+              class="input-field"
+              type="text"
+              name="reference"
+              value="{{ prochaine_ref }}"
+              readonly
+              style="
+                background-color: #f1f5f9;
+                color: #000000;
+                font-weight: 600;
+                border: 1px solid #e2e8f0;
+                padding: 12px;
+                border-radius: 8px;
+                width: 100%;
+                cursor: not-allowed;
+              "
+            />
+          </div>
+          <div class="form-group">
+            <label>Date début inspection <span class="required">*</span></label>
+            <input class="input-field" type="date" name="date_debut" required />
+          </div>
+          <div class="form-group">
+            <label>Date fin inspection <span class="required">*</span></label>
+            <input class="input-field" type="date" name="date_fin" required />
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label>Département <span class="required">*</span></label>
+            <select class="input-field" name="departement">
+              <option value="" disabled selected>Sélectionner</option>
+              <option>Atlantique</option>
+              <option>Borgou</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Commune <span class="required">*</span></label>
+            <select class="input-field" name="commune" required>
+              <option value="" disabled selected>Sélectionner</option>
+              {% for c in communes %}
+              <option value="{{ c }}">{{ c }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Type d'inspection <span class="required">*</span></label>
+          <div class="radio-group">
+            <div
+              class="radio-item active"
+              onclick="selectType(this, 'routine')"
+            >
+              <input
+                type="radio"
+                name="type_inspection"
+                value="routine"
+                checked
+                style="display: none"
+              />
+              <span>●</span> Routine
+            </div>
+            <div class="radio-item" onclick="selectType(this, 'saisine')">
+              <input
+                type="radio"
+                name="type_inspection"
+                value="saisine"
+                style="display: none"
+              />
+              <span>○</span> Saisine
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="saisineBlock"
+          style="
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+          "
+        >
+          <p
+            style="
+              font-weight: 700;
+              font-size: 14px;
+              margin-bottom: 15px;
+              color: var(--primary-color);
+            "
+          >
+            INFORMATION DE SAISINE
+          </p>
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label>Émetteur</label>
+              <input
+                class="input-field"
+                type="text"
+                name="emetteur"
+                placeholder="Nom et prénom"
+              />
+            </div>
+            <div class="form-group">
+              <label>Date</label>
+              <input class="input-field" type="date" name="date_saisine" />
+            </div>
+            <div class="form-group">
+              <label>Moyen</label>
+              <select class="input-field" name="moyen_saisine">
+                <option value="" disabled selected>
+                  Sélectionner le moyen
+                </option>
+                <option value="Courrier physique">Courrier physique</option>
+                <option value="Email">Email officiel</option>
+                <option value="Plateforme">Plateforme digitale</option>
+                <option value="Téléphone">Appel téléphonique</option>
+                <option value="Auto-saisine">Auto-saisine</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top: 15px">
+            <label>Motif de la saisine</label>
+            <div class="section-body">
+              <textarea id="editorMotif" name="motif_saisine">
+                            {{ rapport.motif_saisine|safe }}
+                            </textarea
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header">
+        <div
+          class="section-icon"
+          style="
+            width: 40px;
+            height: 40px;
+            background: rgba(2, 119, 151, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+          "
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            width="22"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <circle cx="12" cy="16" r=".5" fill="currentColor"></circle>
+          </svg>
+        </div>
+        <div class="d-flex flex-column justify-content-center mb-0">
+          <p
+            style="
+              font-size: 18px;
+              font-weight: 700;
+              margin-bottom: 0;
+              font-family: &quot;Montserrat&quot;, sans-serif;
+            "
+          >
+            Équipe d'inspection
+          </p>
+          <p style="font-size: 13px; color: var(--muted); margin-bottom: 0">
+            Membres impliqués dans l'inspection
+          </p>
+        </div>
+      </div>
+      <hr />
+      <div class="section-body">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label
+              style="
+                font-family: &quot;Montserrat&quot;, sans-serif;
+                font-weight: 700;
+              "
+              >Délégué <span class="required">*</span></label
+            >
+            <select
+              class="form-control select2-del"
+              name="delegue"
+              multiple="multiple"
+              style="width: 100%"
+            >
+              <option value=""></option>
+              {% for user in utilisateurs %}
+              <option value="{{ user.id }}">
+                {{ user.get_full_name|default:user.username }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              style="
+                font-family: &quot;Montserrat&quot;, sans-serif;
+                font-weight: 700;
+              "
+              >Membres supplémentaires</label
+            >
+            <select
+              class="form-control select2-members"
+              name="membres_supplementaires"
+              multiple="multiple"
+              style="width: 100%"
+            >
+              {% for user in utilisateurs %}
+              <option value="{{ user.id }}">
+                {{ user.get_full_name|default:user.username }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header">
+        <div
+          class="section-icon"
+          style="
+            width: 40px;
+            height: 40px;
+            background: rgba(2, 119, 151, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+          "
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            width="22"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <circle cx="12" cy="16" r=".5" fill="currentColor"></circle>
+          </svg>
+        </div>
+        <div class="d-flex flex-column justify-content-center mb-0">
+          <p
+            style="
+              font-size: 18px;
+              font-weight: 700;
+              color: #333;
+              margin-bottom: 0;
+              font-family: &quot;Montserrat&quot;, sans-serif;
+            "
+          >
+            Structure inspectée
+          </p>
+          <p style="font-size: 13px; color: #888; margin-bottom: 0">
+            Détails de l'entité contrôlée
+          </p>
+        </div>
+      </div>
+      <hr />
+      <div class="section-body">
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label
+              style="
+                font-family: &quot;Montserrat&quot;, sans-serif;
+                font-weight: 700;
+              "
+              >Type de structure <span class="required">*</span></label
+            >
+            <select class="input-field" name="type_structure" required>
+              <option value="" disabled selected>Sélectionner le type</option>
+              <option value="direction">Direction Centrale</option>
+              <option value="service">Service Déconcentré</option>
+              <option value="etablissement">Établissement Public</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              style="
+                font-family: &quot;Montserrat&quot;, sans-serif;
+                font-weight: 700;
+              "
+              >Nom de la structure <span class="required">*</span></label
+            >
+            <select
+              class="form-control select2-nomstr"
+              name="nom_structure"
+              multiple="multiple"
+              required
+              style="width: 100%"
+            >
+              <option value=""></option>
+              {% for st in structures %}
+              <option value="{{ st.id }}">{{ st.nom }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <div class="section-header">
+        <div
+          class="section-icon"
+          style="
+            width: 40px;
+            height: 40px;
+            background: rgba(2, 119, 151, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+          "
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            width="22"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <circle cx="12" cy="16" r=".5" fill="currentColor"></circle>
+          </svg>
+        </div>
+        <div class="d-flex flex-column justify-content-center mb-0">
+          <p
+            style="
+              font-size: 18px;
+              font-weight: 700;
+              color: #333;
+              margin-bottom: 0;
+              font-family: &quot;Montserrat&quot;, sans-serif;
+            "
+          >
+            Observations générales
+          </p>
+          <p style="font-size: 13px; color: var(--muted); margin-bottom: 0">
+            Saisissez vos remarques et notes finales détaillées
+          </p>
+        </div>
+      </div>
+      <hr />
+      <div class="section-body">
+        <textarea id="editorObs" name="observations_generales">
+            {{ rapport.observations_generales|safe }}
+        </textarea>
+      </div>
+    </div>
+
+    <div
+      class="form-actions"
+      style="
+        margin-bottom: 40px;
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+      "
+    >
+      <button
+        type="button"
+        class="btn-export"
+        onclick="window.history.back()"
+        style="padding: 10px 25px; border-radius: 6px; cursor: pointer"
+      >
+        Annuler
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        style="
+          padding: 10px 30px;
+          border-radius: 6px;
+          font-weight: 600;
+          font-family: &quot;Montserrat&quot;, sans-serif;
+        "
+      >
+        Enregistrer le rapport
+      </button>
+    </div>
+  </form>
+</main>
+<script
+  src="https://cdn.tiny.cloud/1/46l3djw5i4fqikacshmsa3fd22cvk5eytj1erp00h23c4quj/tinymce/6/tinymce.min.js"
+  referrerpolicy="origin"
+></script>
+<script>
+  // 1. Initialisation de TinyMCE
+  tinymce.init({
+    selector: "#editorObs, #editorMotif", // Cible l'ID de mon textarea d'observations et de Motif
+    height: 350,
+    menubar: false,
+    language: "fr_FR", // Assure-toi d'avoir le pack de langue ou utilise l'anglais par défaut
+    plugins: [
+      "advlist",
+      "autolink",
+      "lists",
+      "link",
+      "image",
+      "charmap",
+      "preview",
+      "anchor",
+      "searchreplace",
+      "visualblocks",
+      "code",
+      "fullscreen",
+      "insertdatetime",
+      "media",
+      "table",
+      "help",
+      "wordcount",
+    ],
+    toolbar:
+      "undo redo | blocks | " +
+      "bold italic underline | forecolor backcolor | alignleft aligncenter " +
+      "alignright alignjustify | bullist numlist outdent indent | " +
+      "removeformat | help",
+    content_style:
+      'body { font-family: "Montserrat", sans-serif; font-size: 14px }',
+    setup: function (editor) {
+      // Optionnel : synchroniser en temps réel
+      editor.on("change", function () {
+        editor.save();
+      });
+    },
+  });
+
+  // 2. Gestion des boutons Radio (Routine / Saisine)
+  function selectType(element, type) {
+    document.querySelectorAll(".radio-item").forEach((item) => {
+      item.classList.remove("active");
+      item.querySelector("span").innerText = "○";
+    });
+    element.classList.add("active");
+    element.querySelector("span").innerText = "●";
+    element.querySelector("input").checked = true;
+
+    const saisineBlock = document.getElementById("saisineBlock");
+    if (saisineBlock) {
+      saisineBlock.style.display = type === "saisine" ? "block" : "none";
+    }
+  }
+
+  // 3. Soumission du formulaire
+  document.getElementById("rapportForm").onsubmit = function () {
+    // CRITIQUE : Force TinyMCE à vider son contenu dans le textarea original
+    if (tinymce.get("editorObs")) {
+      document.getElementById("obsHidden").value = tinymce
+        .get("editorObs")
+        .getContent();
+    }
+
+    const motifDiv = document.getElementById("editorMotif");
+    if (motifDiv) {
+      document.getElementById("motifHidden").value = motifDiv.innerHTML;
+    }
+
+    return true;
+  };
+
+  // 4. Initialisations Select2 (jQuery)
+  $(document).ready(function () {
+    // Initialisation Multiple
+    $(".select2-members").select2({
+      placeholder: "Rechercher des membres...",
+      allowClear: true,
+    });
+
+    // Initialisation Multiple
+    $(".select2-del").select2({
+      placeholder: "Sélectionner un délégué...",
+      allowClear: true,
+    });
+    // Initialisation Multiple
+    $(".select2-nomstr").select2({
+      placeholder: "Sélectionner le nom de la structure...",
+      allowClear: true,
+    });
+  });
+</script>
+{% endblock %}
